@@ -1,34 +1,33 @@
-/** @format */
+import { FaUser } from "react-icons/fa";
+import { BsFillTelephoneFill } from "react-icons/bs";
+import css from "./contact.module.css";
+import { deleteContact } from "../../redux/contactsOps";
+import { useDispatch } from "react-redux";
 
-import {useDispatch} from "react-redux";
-import {deleteContact} from "../../redux/contactsSlice";
-import {HiUser, HiPhone} from "react-icons/hi";
-import style from "./Contact.module.css";
-
-const Contact = ({contact}) => {
+export default function Contact({ userData }) {
   const dispatch = useDispatch();
 
-  const handleDelete = () => {
-    dispatch(deleteContact(contact.id));
+  const handleDelete = (id) => {
+    dispatch(deleteContact(id));
   };
 
   return (
-    <div className={style.container}>
-      <div>
-        <div className={style.info}>
-          <HiUser className={style.icon} />
-          {contact.name}
-        </div>
-        <div className={style.info}>
-          <HiPhone className={style.icon} />
-          {contact.number}
-        </div>
-      </div>
-      <button className={style.button} onClick={handleDelete}>
-        Delete
-      </button>
-    </div>
+    <li className={css.userData}>
+      <ul>
+        <li className={css.userDataLi}>
+          <div>
+            <FaUser />
+          </div>
+          <p>{userData.name}</p>
+        </li>
+        <li className={css.userDataLi}>
+          <div>
+            <BsFillTelephoneFill />
+          </div>
+          <p>{userData.number}</p>
+        </li>
+      </ul>
+      <button onClick={() => handleDelete(userData.id)}>Delete</button>
+    </li>
   );
-};
-
-export default Contact;
+}

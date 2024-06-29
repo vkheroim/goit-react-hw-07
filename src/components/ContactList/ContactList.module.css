@@ -1,8 +1,6 @@
-/** @format */
-
-.container {
-  display: flex;
+.userList {
+  display: inline-flex;
   flex-wrap: wrap;
   gap: 20px;
-  padding: 0;
+  align-items: center;
 }

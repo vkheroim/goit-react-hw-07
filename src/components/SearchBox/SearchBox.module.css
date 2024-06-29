@@ -1,17 +1,13 @@
-/** @format */
-
-.container {
-  display: flex;
+.search {
+  display: inline-flex;
   flex-direction: column;
+  gap: 3px;
+  margin-bottom: 40px;
 }
-.container input {
-  width: 400px;
-  padding: 10px;
-  border-radius: 5px;
+.input {
+  height: 30px;
+  border-radius: 4px;
+  padding: 0 15px;
   border: 1px solid black;
-}
-.container input:hover,
-.container input:focus {
-  border-color: blue;
-  background-color: lightgray;
+  outline: none;
 }
