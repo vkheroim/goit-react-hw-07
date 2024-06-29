@@ -1,33 +1,33 @@
-import { FaUser } from "react-icons/fa";
-import { BsFillTelephoneFill } from "react-icons/bs";
-import css from "./contact.module.css";
-import { deleteContact } from "../../redux/contactsOps";
-import { useDispatch } from "react-redux";
+import { useDispatch } from 'react-redux';
+import { deleteContact } from '../../redux/contactsOps';
+import { FaUser, FaPhoneAlt } from 'react-icons/fa';
+import css from './Contact.module.css';
 
-export default function Contact({ userData }) {
+export default function Contact({ contact }) {
   const dispatch = useDispatch();
 
-  const handleDelete = (id) => {
-    dispatch(deleteContact(id));
+  const handleDelete = contactId => {
+    dispatch(deleteContact(contactId));
   };
 
   return (
-    <li className={css.userData}>
-      <ul>
-        <li className={css.userDataLi}>
-          <div>
-            <FaUser />
-          </div>
-          <p>{userData.name}</p>
-        </li>
-        <li className={css.userDataLi}>
-          <div>
-            <BsFillTelephoneFill />
-          </div>
-          <p>{userData.number}</p>
-        </li>
-      </ul>
-      <button onClick={() => handleDelete(userData.id)}>Delete</button>
-    </li>
+    <div className={css.contactContainer}>
+      <div className={css.contacts}>
+        <p className={css.contactsItem}>
+          <FaUser className={css.myIcon} />
+          <span className={css.contactName}>{contact.name}</span>
+        </p>
+        <p className={css.contactsItem}>
+          <FaPhoneAlt className={css.myIcon} />
+          {contact.number}
+        </p>
+      </div>
+      <button
+        className={css.contactBtn}
+        onClick={() => handleDelete(contact.id)}
+      >
+        Delete
+      </button>
+    </div>
   );
 }

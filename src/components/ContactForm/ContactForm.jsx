@@ -1,87 +1,72 @@
-import { Formik, Field, Form, ErrorMessage } from "formik";
-import { nanoid } from "nanoid";
-import * as Yup from "yup";
+import { Formik, Form, Field, ErrorMessage } from 'formik';
 
-import css from "./contactForm.module.css";
-import { useDispatch } from "react-redux";
-import { addContact } from "../../redux/contactsOps";
-const validationSchema = Yup.object().shape({
-  name: Yup.string()
-    .min(2, "Too Short!")
-    .max(15, "Too Long!")
-    .required("Required")
-    .matches(/^[A-Za-z\s]+$/, "Name can only contain english letters"),
-  phone: Yup.string()
-    .min(4, "Too Short!")
-    .max(30, "Too Long!")
-    .required("Required")
-    .matches(/^[+\d\s]+$/, "Phone must be a number"),
+import * as yup from 'yup';
+
+import css from './ContactForm.module.css';
+import { useDispatch } from 'react-redux';
+import { addContact } from '../../redux/contactsOps';
+
+const phoneRegExp = '[0-9]{3}-[0-9]{2}-[0-9]{2}';
+
+const ContactSchema = yup.object().shape({
+  name: yup
+    .string()
+    .min(3, 'Too Short!')
+    .max(50, 'To Long!')
+    .required('Name is required!'),
+
+  number: yup
+    .string()
+    .min(3, 'Too Short!')
+    .max(9, 'To Long!')
+    .matches(phoneRegExp, 'Phone number is not valid: xxx-xx-xx')
+    .required('Phone number is required'),
 });
-
-const nameId = nanoid();
-const phoneId = nanoid();
 
 export default function ContactForm() {
   const dispatch = useDispatch();
-  const handleSubmit = (values, { resetForm }) => {
-    const newContact = {
-      name: values.name.trim(),
-      number: values.phone.trim(),
-    };
-    dispatch(addContact(newContact));
 
-    resetForm();
+  const handleSubmit = (values, actions) => {
+    dispatch(addContact(values));
+    actions.resetForm();
   };
 
   return (
-    <div>
-      <Formik
-        initialValues={{ name: "", phone: "" }}
-        validationSchema={validationSchema}
-        onSubmit={handleSubmit}
-      >
-        {({ isValid, values }) => (
-          <Form className={css.form}>
-            <label className={css.label} htmlFor={nameId}>
-              Name
-              <Field
-                id={nameId}
-                className={css.input}
-                type="text"
-                name="name"
-              />
-              <ErrorMessage
-                name="name"
-                component="div"
-                className={css.errors}
-              />
-            </label>
+    <Formik
+      initialValues={{ name: '', number: '' }}
+      validationSchema={ContactSchema}
+      onSubmit={handleSubmit}
+    >
+      <Form className={css.contactForm}>
+        <div className={css.contactFormItem}>
+          <label htmlFor="userName">Name</label>
+          <Field
+            className={css.contactFormInput}
+            type="text"
+            name="name"
+            id="userName"
+          />
+          <ErrorMessage className={css.errorMsg} name="name" component="span" />
+        </div>
 
-            <label className={css.label} htmlFor={phoneId}>
-              Phone
-              <Field
-                id={phoneId}
-                className={css.input}
-                type="text"
-                name="phone"
-              />
-              <ErrorMessage
-                name="phone"
-                component="div"
-                className={css.errors}
-              />
-            </label>
-
-            <button
-              className={css.button}
-              type="submit"
-              disabled={!isValid || !values.name || !values.phone}
-            >
-              Add
-            </button>
-          </Form>
-        )}
-      </Formik>
-    </div>
+        <div className={css.contactFormItem}>
+          <label htmlFor="userNumber">Number</label>
+          <Field
+            className={css.contactFormInput}
+            type="tel"
+            name="number"
+            id="userNumber"
+          />
+          <ErrorMessage
+            className={css.errorMsg}
+            name="number"
+            component="span"
+          />
+        </div>
+        <button className={css.BtnAdd} type="submit">
+          Add contact
+        </button>
+      </Form>
+    </Formik>
   );
 }

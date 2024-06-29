@@ -1,34 +1,23 @@
-import { changeFilter } from "../../redux/filtersSlice";
-import css from "./searchBox.module.css";
-import { useDispatch } from "react-redux";
-import { useState } from "react";
+import { useDispatch } from 'react-redux';
+import css from './SearchBox.module.css';
+import { changeFilter } from '../../redux/filtersSlice';
 
-export default function SearchBox() {
+export default function SearchBox({ value }) {
   const dispatch = useDispatch();
 
-  const [inputValue, setInputValue] = useState(
-    localStorage.getItem("filter-value") || ""
-  );
-
-  const handleChange = (e) => {
-    const newValue = e.target.value;
-    setInputValue(newValue);
-    dispatch(changeFilter(newValue));
-    localStorage.setItem("filter-value", newValue);
+  const onFindContact = value => {
+    dispatch(changeFilter(value));
   };
-
   return (
-    <div>
-      <label className={css.search} htmlFor="search">
-        Search Your Contacts
-        <input
-          onChange={handleChange}
-          className={css.input}
-          type="text"
-          id="search"
-          value={inputValue}
-        />
-      </label>
+    <div className={css.container}>
+      <label htmlFor="findContact">Find contacts by name</label>
+      <input
+        className={css.searchBoxInput}
+        type="text"
+        value={value}
+        onChange={event => onFindContact(event.target.value)}
+        id="findContact"
+      />
     </div>
   );
 }

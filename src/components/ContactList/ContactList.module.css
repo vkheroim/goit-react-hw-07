@@ -1,6 +1,14 @@
-.userList {
-  display: inline-flex;
-  flex-wrap: wrap;
-  gap: 20px;
-  align-items: center;
+.contactsList {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 15px;
+    max-width: 1200px;
+}
+
+.contactsItem {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
